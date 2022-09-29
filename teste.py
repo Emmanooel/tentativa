@@ -14,15 +14,15 @@ def inspencionaElemento(driver):
 
     itensPagina = pagina.find('div', attrs={'class': 'JIIxO'})
 
-    for itensPagina in range(10):
-        tagA = pagina.find('a', attrs={'class': '_3t7zg _2f4Ho'})
+    for item in range(10):
+        tagA = itensPagina.find('a')
         print(tagA)
-        nameItem = pagina.find('div', attrs={'class': '_3GR-w'}).find_all('h1')
+        nameItem = tagA.find('div', attrs={'class': '_3GR-w'}).find_all('h1')
         print(nameItem)
-        precoItem = pagina.find('div', attrs={'class': '_3GR-w'}).find('div', attrs={'class': '_11_8K'})
+        precoItem = tagA.find('div', attrs={'class': '_3GR-w'}).find_all('div', attrs={'class': '_11_8K'})
         print(precoItem)
 
-    print(itensPagina)
+    print(item)
     
 
 def bot():
