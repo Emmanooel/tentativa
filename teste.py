@@ -1,6 +1,7 @@
 from selenium import webdriver
 from bs4 import BeautifulSoup
-from selenium.webdriver.support.ui import WebDriverWait
+from time import sleep
+
 
 def pesquisaItem(driver):
     driver.find_element('xpath', '//*[@id="search-key"]').send_keys('redmi')
@@ -8,22 +9,28 @@ def pesquisaItem(driver):
 
 
 def inspencionaElemento(driver):
-    driver.scroll_by_amount("window.scrollTo(0, 920)")
-    driver.scroll_by_amount("window.scrollTo(0, 1080)")
-    driver.scroll_by_amount("window.scrollTo(0, 1900)")
-
     site = driver.page_source
     pagina = BeautifulSoup(site, 'html.parser')
-    print(pagina.prettify())
 
+    itensPagina = pagina.find('div', attrs={'class': 'JIIxO'})
 
+    for itensPagina in range(10):
+        tagA = pagina.find('a', attrs={'class': '_3t7zg _2f4Ho'})
+        print(tagA)
+        nameItem = pagina.find('div', attrs={'class': '_3GR-w'}).find_all('h1')
+        print(nameItem)
+        precoItem = pagina.find('div', attrs={'class': '_3GR-w'}).find('div', attrs={'class': '_11_8K'})
+        print(precoItem)
 
-def main():
+    print(itensPagina)
+    
+
+def bot():
     driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
-    driver.get('https://best.aliexpress.com/?lan=pt-br')
+    driver.get('https://pt.aliexpress.com/?spm=a2g0o.productlist.1000002.1.3cc16dbfvgZy5D&gatewayAdapt=glo2bra')
     pesquisaItem(driver)
     inspencionaElemento(driver)
 
 
 if __name__ == "__main__":
-    main()
+    bot()
