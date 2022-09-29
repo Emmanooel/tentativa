@@ -1,31 +1,29 @@
-import time
-from selenium import webdriver 
-from selenium.webdriver.common import by
-from selenium.webdriver.common import keys
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import WebDriverWait
 
-def bot():
-    DRIVER_PATH = '/usr/local/bin/chromedriver'
-    driver = webdriver.Chrome(executable_path=DRIVER_PATH)
-    site = driver.get('https://best.aliexpress.com/?lan=en')
-
-    pesquisar_item(driver)
-    
-    inspenciona_elemento(driver)
-
-
-def pesquisar_item(driver):
+def pesquisaItem(driver):
     driver.find_element('xpath', '//*[@id="search-key"]').send_keys('redmi')
-    time.sleep(5)
     driver.find_element('xpath', '//*[@id="form-searchbar"]/div[1]/input').click()
 
-def inspenciona_elemento(driver):
-    name_element = driver.find_element('xpath', '//*[@id="root"]/div[1]/div/div[2]/div[2]/div/div[2]/a[9]/div[2]/div[1]').text
-    element = driver.find_element('xpath', '//*[@id="root"]/div[1]/div/div[2]/div[2]/div/div[2]/a[9]/div[2]/div[2]').text
-    
-    print(element)
-    print(name_element)
+
+def inspencionaElemento(driver):
+    driver.scroll_by_amount("window.scrollTo(0, 920)")
+    driver.scroll_by_amount("window.scrollTo(0, 1080)")
+    driver.scroll_by_amount("window.scrollTo(0, 1900)")
+
+    site = driver.page_source
+    pagina = BeautifulSoup(site, 'html.parser')
+    print(pagina.prettify())
 
 
 
-if(__name__ == "__main__"):
-    bot()
+def main():
+    driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
+    driver.get('https://best.aliexpress.com/?lan=pt-br')
+    pesquisaItem(driver)
+    inspencionaElemento(driver)
+
+
+if __name__ == "__main__":
+    main()
