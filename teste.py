@@ -1,36 +1,50 @@
+import re
+
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
 
 
-def pesquisaItem(driver):
-    driver.find_element('xpath', '//*[@id="search-key"]').send_keys('redmi')
+def search(driver, itemSearch):
+    driver.find_element('xpath', '//*[@id="search-key"]').send_keys(itemSearch)
     driver.find_element('xpath', '//*[@id="form-searchbar"]/div[1]/input').click()
 
 
 def inspencionaElemento(driver):
-    site = driver.page_source
-    pagina = BeautifulSoup(site, 'html.parser')
+    page = BeautifulSoup(driver.page_source, 'html.parser')
+    pageItem = page.find('div', attrs={'class': 'JIIxO'})
+    listName = []
+    listPrice = []
+    listURL = []
+    for element in pageItem:
+        nameElement = element.find('div', attrs={'class': '_1tu1Z Vgu6S'})
+        price = pageItem.find_all('div', attrs={'class': 'mGXnE _37W_B'})
 
-    itensPagina = pagina.find('div', attrs={'class': 'JIIxO'})
+        name = nameElement.getText()
+        url = itemURL
+        listName.append(name)
+        listURL.append(url)
 
-    for item in range(10):
-        tagA = itensPagina.find('a')
-        print(tagA)
-        nameItem = tagA.find('div', attrs={'class': '_3GR-w'}).find_all('h1')
-        print(nameItem)
-        precoItem = tagA.find('div', attrs={'class': '_3GR-w'}).find_all('div', attrs={'class': '_11_8K'})
-        print(precoItem)
+        for value in price:
+            listValue = value.getText()
+            listPrice.append(listValue)
 
-    print(item)
-    
+    print(listPrice)
+    print(listName)
+    print(listURL)
 
-def bot():
+
+
+
+
+
+
+def main():
     driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver')
     driver.get('https://pt.aliexpress.com/?spm=a2g0o.productlist.1000002.1.3cc16dbfvgZy5D&gatewayAdapt=glo2bra')
-    pesquisaItem(driver)
+    search(driver, 'redmi')
     inspencionaElemento(driver)
 
 
 if __name__ == "__main__":
-    bot()
+    main()
