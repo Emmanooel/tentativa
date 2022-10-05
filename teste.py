@@ -6,39 +6,32 @@ import psycopg2
 
 # configuração banco de dados
 
-def configdb():
-    host = "b68b2e5250c1"
-    dbname = "teste"
-    user = "postgres"
-    password = 1234
-    sslmode = "require"
+def dbConnect():
+    _host = "localhost"
+    _port = "5432"
+    _user = "postgres"
+    _pass = 1234
 
-    # string de conexão
+    return psycopg2.connect(host=_host, port=_port, user=_user, password=_pass)
 
-    conn_string = 'host={0} user ={1} dbname={2} password={3} sslmode={4}'.format(host, user, dbname, password, sslmode)
 
-    conn = psycopg2.connect(conn_string)
-    print('conectado')
+def execute_query_insert (query): 
+    conn = dbConnect()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+    finally:
+        conn.close()
 
-    cursor = conn.cursor()
-
-    # função para criar tabela
-def createTable(configdb):
-    cursor = configdb.cursor
-    cursor.execute("CREATE TABLE Products (id serial PRIMARY KEY, itens VARCHAR(255);")
-    print("tabela criada com sucesso")
-
-    # função para inserir valores no banco de dados
-def insertValues (configdb, getItensInPage): 
-    cursor = configdb.cursor
-    cursor.execute("INSERT INTO Products (itens) VALUES (%s);", (getItensInPage))
-
-def closeDataBase(configdb):
-    cursor = configdb.cursor
-    conn = configdb.conn
-    conn.commit()
-    cursor.close()
-    conn.close()
+def execute_query_select(TODO):
+    conn = dbConnect()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(TODO)
+        conn.commit()
+    finally:
+        conn.close()
 
 class Product:
     name = ''
@@ -82,10 +75,7 @@ def main():
     getItensInPage(driver)
 
 #chamando as funções para banco de dados
-    configdb()
-    createTable(configdb)
-    insertValues(configdb, getItensInPage)
-    closeDataBase(configdb)
+
 
 
 
