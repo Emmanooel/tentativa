@@ -97,18 +97,21 @@ def getItensInPage(driver):
 
 
 def send_email(select_list):
-    smtp = smtplib.SMTP_SSL('smtpgmail.com', 465)
-    mensagem_email = f'segue a lista de itens adquiridas no site, segue a lista: {select_list}'
-    
-    msg = email.message.Message(mensagem_email)
-    assunto = msg['Assunto'] = 'Lista de itens solicitada para a aula do dia 10/10'
-    de = msg['De'] = 'emmanoelk@gmail.com'
-    para = msg['Para'] = 'braullio.goncalves@easyc.com.br'
-    password = 'wfcjukmewmcqaloy'
-    email = 'emmanoelk@gmail.com'
+    smtp = smtplib.SMTP_SSL('smtp.gmail.com', 587)
 
+    email = 'emmanoelk@gmail.com'
+    password = 'wfcjukmewmcqaloy' 
     smtp.login(email, password)
-    smtp.sendmail(de, para, assunto)
+
+    sender = 'emmanoelk@gmail.com'
+    address = ['braullio.goncalves@easyc.com.br']
+    subject = f''' From: Grupo 01 <emmanoelk@gmail.com>
+    To: Braullio <braullio.goncalves@easyc.com.br>
+    Subject: Segue lista de itens solicitada para a aula:
+    {select_list}
+    '''
+
+    smtp.sendmail(sender, address, subject)
     smtp.quit
 
 
